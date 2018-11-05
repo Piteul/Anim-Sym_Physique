@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Node : MonoBehaviour {
 
+    public float constraint;
+
+
+
 	// Use this for initialization
 	void Start () {
 		
