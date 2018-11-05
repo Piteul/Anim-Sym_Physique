@@ -5,6 +5,8 @@ using UnityEngine;
 public class Node : MonoBehaviour {
 
     public float constraint;
+    private Vector3 lastPosition { get; set; }
+
 
 
 

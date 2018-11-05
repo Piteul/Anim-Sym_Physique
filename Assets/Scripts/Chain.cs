@@ -74,44 +74,57 @@ public class Chain : MonoBehaviour {
         Vector3 direction;
         float constraint;
 
+        //From first to last
         for (int i = 0; i < nodes.Length - 2; i++) {
 
             direction = nodes[i + 1].transform.position - nodes[i].transform.position;
             direction = direction.normalized;
 
-            //Debug.Log("Longueur : " + distance[i].ToString());
-            nodes[i + 1].transform.position = nodes[i].transform.position + (distance[i] * direction);
+            //Constraint
+            constraint = nodes[i].GetComponent<Node>().constraint;
+            if (constraint != 0) {
+                //Direction : H -> I 
+                Vector3 dir = nodes[i].transform.position - nodes[i + 1].transform.position; 
+                //Direction : I -> J
+                Vector3 dir2 = nodes[i - 1].transform.position - nodes[i].transform.position;
+                dir = dir.normalized;
+                dir2 = dir2.normalized;
+
+                float angle = Vector3.Angle(dir, dir2);
+                Debug.Log("Angle : " + angle.ToString());
+
+                if (angle > constraint) {
+
+                }
+                else {
+                    nodes[i + 1].transform.position = nodes[i].transform.position + (distance[i] * direction);
+                }
+            }
         }
 
+        //From last to first
         for (int i = nodes.Length - 1; i > 0; i--) {
-
             direction = nodes[i - 1].transform.position - nodes[i].transform.position;
             direction = direction.normalized;
-
-            //Debug.Log("Longueur : " + distance[i].ToString());
-            nodes[i - 1].transform.position = nodes[i].transform.position + (distance[i-1] * direction);
-
 
             //Constraint
             constraint = nodes[i].GetComponent<Node>().constraint;
 
             if (constraint != 0) {
-                Vector3 dir = nodes[i].transform.position - nodes[i+1].transform.position;
+                //Direction : I - > J
+                Vector3 dir = nodes[i].transform.position - nodes[i + 1].transform.position;
                 dir = dir.normalized;
 
                 float angle = Vector3.Angle(dir, direction);
 
-                if(angle > constraint) {
+                if (angle > constraint) {
 
-                    Debug.Log("Angle : " + angle.ToString());
-
-
-
+                    //Debug.Log("Angle : " + angle.ToString());
                 }
-
+                else {
+                    nodes[i - 1].transform.position = nodes[i].transform.position + (distance[i - 1] * direction);
+                }
             }
-
-
         }
 
         //nodes[nodes.Length-1].transform.position = lastPos;
